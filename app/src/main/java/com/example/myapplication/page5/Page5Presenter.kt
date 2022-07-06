@@ -1,9 +1,9 @@
-package com.example.myapplication.page3
+package com.example.myapplication.page5
 
 import androidx.core.content.IntentCompat
 import java.util.*
 
-class Page3Presenter(val view: Page3Contract.View):Page3Contract.Presenter {
+class Page5Presenter(val view: Page5Contract.View):Page5Contract.Presenter {
     var letter = ('a'..'z')
     override fun fillInContent(){
         for(i in 1..15){

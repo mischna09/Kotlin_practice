@@ -1,6 +1,6 @@
-package com.example.myapplication.page3
+package com.example.myapplication.page5
 
-interface Page3Contract {
+interface Page5Contract {
     interface View{
         fun createItem(title: String, content:String);
     }

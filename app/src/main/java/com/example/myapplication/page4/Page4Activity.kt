@@ -1,7 +1,5 @@
 package com.example.myapplication.page4
 
-import android.app.Application
-import android.content.ClipData
 import android.content.Context
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
@@ -17,8 +15,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.R
 import com.example.myapplication.databinding.ActivityPage4Binding
-import com.example.myapplication.databinding.LayoutItem2Binding
-import com.example.myapplication.page4.Page4Contract
 import com.example.myapplication.page4.Page4Presenter
 import java.text.FieldPosition
 
@@ -51,6 +47,17 @@ class Page4Activity : AppCompatActivity(), Page4Contract.View {
             adapter = myAdapter
         }
 
+        //another recycleview
+        val test_array = arrayListOf<TestModel>()
+        for( i in 0..100){
+            test_array.add(TestModel("$i",0))
+        }
+        val recycleview2 = binding.recycleview2
+        val testAdapter = TestAdapter(this, test_array)
+        val linearLayoutManager2 = LinearLayoutManager(this)
+        linearLayoutManager2.orientation = LinearLayoutManager.VERTICAL
+        recycleview2.layoutManager = linearLayoutManager2
+        recycleview2.adapter = testAdapter
 
     }
 
@@ -91,3 +98,54 @@ class MyAdapter(val applist: List<AppInfo>) : RecyclerView.Adapter<MyAdapter.MyV
 }
 
 class AppInfo(val iconDrawable: Drawable, val name: String)
+
+/********        another adapter        ***********/
+class TestAdapter : RecyclerView.Adapter<TestAdapter.ViewHolder> {
+
+    private var context: Context
+    private var data: ArrayList<TestModel>
+
+    constructor(context: Context, data: ArrayList<TestModel>) : super() {
+        this.context = context
+        this.data = data
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val cell = LayoutInflater.from(context).inflate(R.layout.layout_item2, parent, false)
+        val viewHolder = ViewHolder(cell)
+        viewHolder.text_title = cell.findViewById(R.id.text_title)
+        viewHolder.img_item = cell.findViewById(R.id.img_item)
+
+        cell.setOnClickListener{
+            Toast.makeText(context,viewHolder.text_title.text,Toast.LENGTH_SHORT).show()
+        }
+        return viewHolder
+    }
+
+    override fun getItemCount(): Int {
+        return data.size
+    }
+
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        val model = data[position]
+        holder.text_title.text = model.title
+        holder.img_item.setImageResource(R.drawable.ic_baseline_access_time_24)
+    }
+
+    class ViewHolder : RecyclerView.ViewHolder {
+        lateinit var text_title: TextView
+        lateinit var img_item: ImageView
+
+        constructor(itemView: View) : super(itemView)
+    }
+}
+
+class TestModel {
+    var title: String
+    var img_res: Int
+
+    constructor(title: String, img_res: Int) {
+        this.title = title
+        this.img_res = img_res
+    }
+}

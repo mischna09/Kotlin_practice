@@ -1,14 +1,14 @@
 package com.example.myapplication
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Button
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import com.example.myapplication.databinding.ActivityMainBinding
 import com.example.myapplication.page2.Page2Activity
 import com.example.myapplication.page3.Page3Activity
 import com.example.myapplication.page4.Page4Activity
+import com.example.myapplication.page5.Page5Activity
 
 class MainActivity : AppCompatActivity(), MainContract.View {
 
@@ -31,6 +31,10 @@ class MainActivity : AppCompatActivity(), MainContract.View {
         }
         binding.btn3.setOnClickListener {
             val intent = Intent(this, Page4Activity::class.java);
+            startActivity(intent);
+        }
+        binding.btn4.setOnClickListener {
+            val intent = Intent(this, Page5Activity::class.java);
             startActivity(intent);
         }
     }

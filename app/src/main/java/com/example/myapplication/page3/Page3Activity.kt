@@ -1,25 +1,18 @@
 package com.example.myapplication.page3
 
 import android.graphics.Color
-import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
-import androidx.viewpager.widget.ViewPager
-import androidx.viewpager.widget.ViewPager.OnPageChangeListener
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import androidx.viewpager2.widget.ViewPager2
-import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
-import com.example.myapplication.R
 import com.example.myapplication.databinding.ActivityPage3Binding
 import com.example.myapplication.databinding.LayoutItemBinding
-import com.example.myapplication.page2.Page3Contract
-import com.example.myapplication.page2.Page3Presenter
 
 class Page3Activity : AppCompatActivity(), Page3Contract.View {
     private lateinit var binding: ActivityPage3Binding

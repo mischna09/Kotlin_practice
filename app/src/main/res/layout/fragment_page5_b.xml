@@ -23,7 +23,7 @@
             <EditText
                 android:id="@+id/editTextTextPersonName4"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="48dp"
                 android:layout_weight="2"
                 android:ems="10"
                 android:inputType="textPersonName"
@@ -45,7 +45,7 @@
             <EditText
                 android:id="@+id/editTextTextPersonName5"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="48dp"
                 android:layout_weight="2"
                 android:ems="10"
                 android:inputType="textPersonName"
@@ -54,7 +54,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="horizontal">
 
             <TextView
@@ -62,12 +62,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:gravity="center_vertical"
                 android:text="TextView" />
 
             <RadioGroup
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="48dp"
                 android:layout_weight="2"
+                android:gravity="center_vertical"
                 android:orientation="horizontal">
 
                 <RadioButton

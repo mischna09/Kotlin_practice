@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.util.AttributeSet
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -14,13 +13,12 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.ListAdapter
+import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.R
 import com.example.myapplication.databinding.ActivityPage4Binding
 import com.example.myapplication.databinding.LayoutItem2Binding
-import java.lang.IndexOutOfBoundsException
-import java.util.*
+import java.io.Serializable
 
 class Page4Activity : AppCompatActivity(), Page4Contract.View {
     private lateinit var binding: ActivityPage4Binding
@@ -48,30 +46,34 @@ class Page4Activity : AppCompatActivity(), Page4Contract.View {
         for( i in 0..3){
             test_array.add(TestModel("$i",0))
         }
-        val recycleview2 = binding.recycleview2
-        val testAdapter = TestAdapter(this, test_array)
-        testAdapter.submitList(test_array)
 
-        val linearLayoutManager2 = WrapLinearLayoutManager(this)
+
+        val recycleview2 = binding.recycleview2
+        val testAdapter = TestAdapter(this)
+        testAdapter.submitList(test_array.toList())
+
+        val linearLayoutManager2 = LinearLayoutManager(this)
         linearLayoutManager2.orientation = LinearLayoutManager.VERTICAL
         recycleview2.adapter = testAdapter
         recycleview2.layoutManager = linearLayoutManager2
 
         binding.btnPage4Add1.setOnClickListener{
-            test_array.add(TestModel("${(10..20).random()}",0))
+            Log.d("???", "onCreate: ${testAdapter.currentList}")
 
-            // #submitlist 不同傳入相同的list，隨便弄一個新的即可
-            testAdapter.submitList(test_array.toMutableList())
+            test_array.add(TestModel("${(10..20).random()}",0))
+            // #submitlist 不能傳入相同的list，要額外toList()
+            testAdapter.submitList(test_array.toList())
         }
         binding.btnPage4Reduce1.setOnClickListener{
             test_array.removeAt(test_array.lastIndex)
-            testAdapter.submitList(test_array.toMutableList())
+            testAdapter.submitList(test_array.toList())
         }
         binding.btnPage4Shuffle.setOnClickListener{
             //val random_array = testAdapter.currentList.shuffled()
             val random_array = test_array.shuffled()
             testAdapter.submitList(random_array)
         }
+
     }
 
     override fun createItem(title: String, content: String) {
@@ -113,10 +115,12 @@ class Page4Activity : AppCompatActivity(), Page4Contract.View {
 class AppInfo(val iconDrawable: Drawable, val name: String)*/
 
 /********        another adapter        ***********/
-class TestAdapter(private var context: Context, private var data: MutableList<TestModel>) :
+
+
+
+class TestAdapter(private val context: Context) :
     ListAdapter<TestModel, TestAdapter.ViewHolder>(DiffCallback()) {
     private lateinit var binding : LayoutItem2Binding
-
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         //val cell = LayoutInflater.from(context).inflate(R.layout.layout_item2, parent, false)
@@ -131,13 +135,13 @@ class TestAdapter(private var context: Context, private var data: MutableList<Te
         return viewHolder
     }
 
-    override fun getItemCount(): Int {
+    /*override fun getItemCount(): Int {
         return data.size
-    }
+    }*/
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         //設定個別物件
-        val model = data[position]
+        val model = currentList[position]
         holder.text_title.text = model.title
         holder.img_item.setImageResource(R.drawable.ic_baseline_access_time_24)
         holder.layout_back.setOnClickListener{
@@ -153,15 +157,20 @@ class TestAdapter(private var context: Context, private var data: MutableList<Te
     }
 }
 //data class
-data class TestModel(var title: String, var img_res: Int)
+data class TestModel(
+    var title: String,
+    var img_res: Int
+    ): Serializable
+
+
 
 //DiffUtil
 class DiffCallback : DiffUtil.ItemCallback<TestModel>() {
     override fun areItemsTheSame(oldItem: TestModel, newItem: TestModel) =
-        oldItem == newItem
+        oldItem.title === newItem.title
 
     override fun areContentsTheSame(oldItem: TestModel,newItem: TestModel) =
-        oldItem == newItem
+        oldItem.title == newItem.title
 }
 
 //WrapLinearLayoutManager

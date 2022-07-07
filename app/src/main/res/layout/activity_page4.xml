@@ -37,6 +37,14 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="-1" />
+
+            <Button
+                android:id="@+id/btn_page4_shuffle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="shuffle"
+                android:textAllCaps="false" />
         </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView

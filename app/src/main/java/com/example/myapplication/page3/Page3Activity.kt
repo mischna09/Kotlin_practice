@@ -50,7 +50,6 @@ class Page3Activity : AppCompatActivity(), Page3Contract.View {
                     super.onPageScrollStateChanged(state)
                 }
             })*/
-
         }
     }
 

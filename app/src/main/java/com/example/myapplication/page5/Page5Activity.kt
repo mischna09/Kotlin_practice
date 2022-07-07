@@ -34,6 +34,7 @@ class Page5Activity : AppCompatActivity(), Page5Contract.View {
         viewpager2.adapter = viewPagerAdapter
         //禁止滑動
         //viewpager2.isUserInputEnabled = false
+
         //viewPager2切換
         viewpager2.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {

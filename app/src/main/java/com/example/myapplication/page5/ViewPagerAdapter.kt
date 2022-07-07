@@ -16,7 +16,7 @@ import com.example.myapplication.databinding.FragmentPage5BBinding
 import com.example.myapplication.databinding.LayoutItemBinding
 
 class ViewPagerAdapter(activity: FragmentActivity) : FragmentStateAdapter(activity) {
-    var list: ArrayList<Fragment> = ArrayList()
+    private var list: ArrayList<Fragment> = ArrayList()
     fun updateList(list: ArrayList<Fragment>) {
         this.list = list
     }
@@ -32,13 +32,12 @@ class ViewPagerAdapter(activity: FragmentActivity) : FragmentStateAdapter(activi
 }
 
 class AFragment : Fragment() {
-    private lateinit var binding: FragmentPage5ABinding
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentPage5ABinding.inflate(inflater, container, false)
+        val binding = FragmentPage5ABinding.inflate(inflater, container, false)
         binding.btnPage5FragACommit.setOnClickListener {
             Toast.makeText(context, "A", Toast.LENGTH_SHORT).show();
         }
@@ -49,10 +48,11 @@ class AFragment : Fragment() {
         return binding.root
     }
 
-    override fun onResume() {
+    /*override fun onResume() {
+        super.onResume()    //要在最前面
+
         Toast.makeText(context, "RE", Toast.LENGTH_SHORT).show();
-        super.onResume()
-    }
+    }*/
 }
 
 class BFragment : Fragment() {
@@ -84,7 +84,7 @@ class ViewPagerFragment() : Fragment() {
         binding = LayoutItemBinding.inflate(inflater, container, false)
         //val root = inflater.inflate(R.layout.layout_item, container, false)
 
-        binding.textTitle.text = (position + 1).toString()
+        binding.textTitle.text = "${position+1}"
         binding.run {
             when (position) {
                 0 -> layoutBack.setBackgroundColor(Color.GREEN)

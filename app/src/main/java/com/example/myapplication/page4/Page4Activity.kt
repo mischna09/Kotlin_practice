@@ -1,28 +1,24 @@
 package com.example.myapplication.page4
 
 import android.content.Context
-import android.content.pm.ApplicationInfo
-import android.content.pm.PackageManager
-import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.ImageView
+import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.ListAdapter
 import com.example.myapplication.R
 import com.example.myapplication.databinding.ActivityPage4Binding
-import com.example.myapplication.page4.Page4Presenter
-import java.text.FieldPosition
 
 class Page4Activity : AppCompatActivity(), Page4Contract.View {
     private lateinit var binding: ActivityPage4Binding
 
-    private var myAdapter: MyAdapter? = null
-    private var appList = ArrayList<AppInfo>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,25 +27,19 @@ class Page4Activity : AppCompatActivity(), Page4Contract.View {
 
         val presenter = Page4Presenter(this);
 
-        initApplist()
+        /*initApplist()
 
         val linearLayoutManager = LinearLayoutManager(this)
         linearLayoutManager.orientation = LinearLayoutManager.VERTICAL
         binding.recycleview1.run {
             layoutManager = linearLayoutManager
-            addItemDecoration(
-                DividerItemDecoration(
-                    this@Page4Activity,
-                    LinearLayoutManager.VERTICAL
-                )
-            )
             myAdapter = MyAdapter(appList)
             adapter = myAdapter
-        }
+        }*/
 
         //another recycleview
         val test_array = arrayListOf<TestModel>()
-        for( i in 0..100){
+        for( i in 0..3){
             test_array.add(TestModel("$i",0))
         }
         val recycleview2 = binding.recycleview2
@@ -59,22 +49,30 @@ class Page4Activity : AppCompatActivity(), Page4Contract.View {
         recycleview2.layoutManager = linearLayoutManager2
         recycleview2.adapter = testAdapter
 
+        binding.btnPage4Add1.setOnClickListener{
+            test_array.add(TestModel("加一",0))
+            recycleview2.adapter = TestAdapter(this, test_array)
+        }
+        binding.btnPage4Reduce1.setOnClickListener{
+            test_array.removeAt(test_array.lastIndex)
+            recycleview2.adapter = TestAdapter(this, test_array)
+        }
     }
 
     override fun createItem(title: String, content: String) {
 
     }
 
-    private fun initApplist() {
+    /*private fun initApplist() {
         val list: List<ApplicationInfo> =
             packageManager.getInstalledApplications(PackageManager.MATCH_SYSTEM_ONLY)
         for (i in list.indices) {
             appList.add(AppInfo(list[i].loadIcon(packageManager), list[i].packageName))
         }
-    }
+    }*/
 }
 
-class MyAdapter(val applist: List<AppInfo>) : RecyclerView.Adapter<MyAdapter.MyViewHolder>() {
+/*class MyAdapter(val applist: List<AppInfo>) : RecyclerView.Adapter<MyAdapter.MyViewHolder>() {
     inner class MyViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val appIcon: ImageView = view.findViewById(R.id.img_item)
         val appName: TextView = view.findViewById(R.id.text_title)
@@ -97,18 +95,11 @@ class MyAdapter(val applist: List<AppInfo>) : RecyclerView.Adapter<MyAdapter.MyV
     override fun getItemCount() = applist.size
 }
 
-class AppInfo(val iconDrawable: Drawable, val name: String)
+class AppInfo(val iconDrawable: Drawable, val name: String)*/
 
 /********        another adapter        ***********/
-class TestAdapter : RecyclerView.Adapter<TestAdapter.ViewHolder> {
-
-    private var context: Context
-    private var data: ArrayList<TestModel>
-
-    constructor(context: Context, data: ArrayList<TestModel>) : super() {
-        this.context = context
-        this.data = data
-    }
+class TestAdapter(private var context: Context, private var data: ArrayList<TestModel>) :
+    ListAdapter<TestModel, TestAdapter.ViewHolder>(DiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val cell = LayoutInflater.from(context).inflate(R.layout.layout_item2, parent, false)
@@ -132,20 +123,22 @@ class TestAdapter : RecyclerView.Adapter<TestAdapter.ViewHolder> {
         holder.img_item.setImageResource(R.drawable.ic_baseline_access_time_24)
     }
 
-    class ViewHolder : RecyclerView.ViewHolder {
+    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         lateinit var text_title: TextView
         lateinit var img_item: ImageView
 
-        constructor(itemView: View) : super(itemView)
     }
 }
+//data class
+data class TestModel(var title: String, var img_res: Int)
 
-class TestModel {
-    var title: String
-    var img_res: Int
+//DiffUtil
+class DiffCallback : DiffUtil.ItemCallback<TestModel>() {
+    override fun areItemsTheSame(oldItem: TestModel, newItem: TestModel) =
+        oldItem === newItem
 
-    constructor(title: String, img_res: Int) {
-        this.title = title
-        this.img_res = img_res
-    }
+    override fun areContentsTheSame(
+        oldItem: TestModel,
+        newItem: TestModel
+    ) = false
 }
